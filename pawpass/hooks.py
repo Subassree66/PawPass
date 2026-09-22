@@ -5,6 +5,24 @@ app_description = "Pet Grooming Centre"
 app_email = "subassree.6616@gmail.com"
 app_license = "mit"
 
+# fixtures = [
+#     "Role Permission_manager",
+#     {"dt": "Role", "filters": [["role_name", "like", "PP Front Desk%,PP Attendant%, PP Manager%"]]},
+#     ]
+
+fixtures = [
+    {
+        "dt":"Role","filters":[["name","in","PP Front Desk,PP Attendant,PP Manager"]]
+    },
+    {
+        "dt":"Custom DocPerm","filters":[["role","in","PP Front Desk,PP Attendant,PP Manager"]]
+    }
+]
+
+permission_query_conditions = {
+    "Stay Card": "app.permissions.todo_query",
+}
+
 # Apps
 # ------------------
 

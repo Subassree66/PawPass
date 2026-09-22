@@ -1,0 +1,214 @@
+{
+ "actions": [],
+ "allow_bulk_edit": 1,
+ "allow_rename": 1,
+ "autoname": "PC-.YYYY.-.#####",
+ "creation": "2026-09-22 15:35:41.542305",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_as7q",
+  "amended_from",
+  "pet_and_stay_section",
+  "pet",
+  "owner_name",
+  "owner_phone",
+  "checkin_date",
+  "expected_checkout_date",
+  "purpose",
+  "special_instructions",
+  "compliance_and_assignment_section",
+  "vaccination_status",
+  "assigned_attendant",
+  "assignment_notes",
+  "services_section",
+  "service_lines",
+  "financials_and_checkout_section",
+  "services_total",
+  "fianl_amount",
+  "payment_status"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_as7q",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Stay Card",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "pet_and_stay_section",
+   "fieldtype": "Section Break",
+   "label": "PET AND STAY"
+  },
+  {
+   "fieldname": "pet",
+   "fieldtype": "Link",
+   "label": "Pet",
+   "options": "Pet",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "pet.owner_name",
+   "fieldname": "owner_name",
+   "fieldtype": "Data",
+   "label": "Owner Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "pet.owner_phone",
+   "fieldname": "owner_phone",
+   "fieldtype": "Data",
+   "label": "Owner Phone",
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "checkin_date",
+   "fieldtype": "Date",
+   "label": "Checkin date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expected_checkout_date",
+   "fieldtype": "Date",
+   "label": "Expected Checkout Date"
+  },
+  {
+   "default": "Grooming Only",
+   "fieldname": "purpose",
+   "fieldtype": "Select",
+   "label": "Purpose",
+   "options": "Grooming Only\nBoarding\nBoth"
+  },
+  {
+   "fieldname": "special_instructions",
+   "fieldtype": "Text Editor",
+   "label": "Special Instructions"
+  },
+  {
+   "fieldname": "compliance_and_assignment_section",
+   "fieldtype": "Section Break",
+   "label": "Compliance And Assignment"
+  },
+  {
+   "fieldname": "vaccination_status",
+   "fieldtype": "Select",
+   "label": "Vaccination Status",
+   "options": "Not Checked\nValid\nExpired",
+   "read_only": 1
+  },
+  {
+   "fieldname": "assigned_attendant",
+   "fieldtype": "Link",
+   "label": "Assigned Attendant",
+   "options": "Attendant"
+  },
+  {
+   "depends_on": "eval:doc.assigned_attendant",
+   "fieldname": "assignment_notes",
+   "fieldtype": "Small Text",
+   "label": "Assignment Notes"
+  },
+  {
+   "fieldname": "services_section",
+   "fieldtype": "Section Break",
+   "label": "Services"
+  },
+  {
+   "fieldname": "service_lines",
+   "fieldtype": "Table",
+   "label": "Service Lines",
+   "options": "Service Line"
+  },
+  {
+   "fieldname": "financials_and_checkout_section",
+   "fieldtype": "Section Break",
+   "label": "Financials And Checkout"
+  },
+  {
+   "fieldname": "services_total",
+   "fieldtype": "Currency",
+   "label": "Services Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "fianl_amount",
+   "fieldtype": "Currency",
+   "label": "Fianl Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Payment Status",
+   "options": "Draft\nChecked In\nIn Service\nReady for Pickup\nPicked Up\nCancelled"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-09-22 16:23:49.254657",
+ "modified_by": "Administrator",
+ "module": "PawPass",
+ "name": "Stay Card",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "print": 1,
+   "read": 1,
+   "role": "PP Front Desk",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "PP Attendant",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "PP Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
