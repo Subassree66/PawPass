@@ -6,4 +6,8 @@ from frappe.model.document import Document
 
 
 class Attendant(Document):
-	pass
+	def rename_attendant(old_name,new_name):
+		frapee.rename_doc("Attendant",old_name,new_name,merge=False)
+	
+	days = frappe.db.get_value("PawPass Settings", None, "reminder_days_before_checkout")
+

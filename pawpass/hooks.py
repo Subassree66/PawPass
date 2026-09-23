@@ -19,9 +19,19 @@ fixtures = [
     }
 ]
 
-permission_query_conditions = {
-    "Stay Card": "app.permissions.todo_query",
-}
+
+# after_install:
+
+# doc_events ={
+#     "Stay Card":{
+#         "before_save":"pawpass.pawpass.api.get_upcoming_checkouts"
+#     }
+# }
+
+
+# permission_query_conditions = {
+#     "Stay Card": "app.permissions.todo_query",
+# }
 
 # Apps
 # ------------------
