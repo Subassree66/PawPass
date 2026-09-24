@@ -7,6 +7,8 @@ from frappe.model.document import Document
 
 
 class StayCard(Document):
+	def before_print(self,method=None,print_settings=None):
+		self.print_summary = f"{self.owner_name} - {self.pet}"
 	def validate(self):
 		expiry_date=frappe.db.get_value("Pet",self.pet,"vaccination_expiry")
 		grace_days=frappe.db.get_single_value("PawPass Settings","vaccination_grace_days")or 0
@@ -76,9 +78,9 @@ class StayCard(Document):
 
 
 def send_stay_complete_email(stay_card_name):
-		doc=frappe.get_doc("Stay Card",stay_card_name)
-		pet_owner=frappe.get_value("Pet",doc.pet,"owner_email")
-		if pet_owner:
-			frappe.sendmail(pet_owner,
-			subject=f"{doc.pet} is ready for pickup", message="Your pet is ready for pickup com and pickup it")	
+	doc=frappe.get_doc("Stay Card",stay_card_name)
+	pet_owner=frappe.get_value("Pet",doc.pet,"owner_email")
+	if pet_owner:
+		frappe.sendmail(pet_owner,
+		subject=f"{doc.pet} is ready for pickup", message="Your pet is ready for pickup com and pickup it")	
 

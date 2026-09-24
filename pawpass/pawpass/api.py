@@ -24,11 +24,23 @@ def share_stay_card(stay_card_name,user_email):
 @frappe.whitelist()
 def transfer_stays(from_attendant, to_attendant):
     try:
-        frappe.db.sql((to_attendant,from_attendant))
+        frappe.db.sql(""" UPDATE `tabStay Card` set attendant = %s where attendant = %s and and status ='Open' """,(to_attendant,from_attendant))
         frappe.db.commit()
     except Exception as e:
         frappe.db.roolback()
         frappe.log_error(
-            title="transfer_stays failed",message="log error in to_attendant and from_attendant"
+            title="transfer_stays failed",
+            message="log error in to_attendant and from_attendant"
         )
+        raise
+
+@frappe.whitelist()
+def reassign_attendant(stay_card,attendant):
+    doc=frappe.get_doc("Stay Card",stay_card)
+    doc.assigned_attendant=attendant
+    doc.save()
+
+
+def format_value(value):
+    return frappe.format_value(value,{"field_type":"Currency"})
 

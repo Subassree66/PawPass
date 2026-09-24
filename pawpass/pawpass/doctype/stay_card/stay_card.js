@@ -12,11 +12,26 @@ frappe.ui.form.on("Stay Card", {
     //             }
     //         })
 	//     },
-    // refresh(frm){
-    //     if(frm.doc.status=="Ready for Pickup" AND docstatus==1)
-            
-    // }
+
+
     refresh(frm){
+        if(frm.doc.status=="Ready for Pickup"){
+            frm.dashboard.add_indicator ("Ready for Pickup","Orange");
+        }
+        else if(frm.doc.status=="Picked Up"){
+            frm.dashboard.add_indicator("Picked Up","Green")
+        }
+        else{
+            frm.dashboard.add_indicator(frm.doc.status,"Blue")
+        }    
+        
+        if(frm.doc.status =="Ready for Pickup" && frm.doc.docstatus==1){
+            frm.add_custom_button("Mark as Picked up",()=>{
+                frm.set_value("status","Picked Up");
+                frm.save();
+            })
+        }
+
         frm.add_custom_button("Cancel",()=>{
             let d = new frappe.ui.Dialog({
                 title:"Cancel Reason",
@@ -40,10 +55,22 @@ frappe.ui.form.on("Stay Card", {
             frappe.prompt({
                 label:"New Attendant",
                 fieldname: 'attendant',
-                fieldtype: 'Data'
+                fieldtype: 'Link',
+                options:"Attendant",
+                reqd:1
             }, (values) => {
-                frappe.msgprint(values.attendant);
-            })
+                frappe.confirm("Are you sure want to confirm this reassign",()=>{
+                    frappe.call({
+                        method:"pawpass.pawpass.api.reassign_attendant",
+                        args:{stay_card:frm.doc.name,attendant:values.attendant},
+                        callback(r){
+                            // frm.reload_doc();
+                            frm.trigger("assigned_attendant");
+                            frappe.msgprint("Attendant reassigned");
+                        }
+                    });
+                });
+            },"Reassign Attendant","Reassign");
         })
     }
 });

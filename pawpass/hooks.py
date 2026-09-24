@@ -18,9 +18,24 @@ fixtures = [
         "dt":"Custom DocPerm","filters":[["role","in","PP Front Desk,PP Attendant,PP Manager"]]
     }
 ]
+after_install="pawpass.install.after_install"
 
+doc_events = {
+    "*": {
+        "on_update": "pawpass.audit.log_change",
+        "on_submit": "pawpass.audit.log_change",
+        "on_cancel": "pawpass.audit.log_change"
+    }
+}
+jinja={
+    "methods":["pawpass.jinja_methods"]
+}
 
-# after_install:
+# scheduler_events={
+#     "daily":[
+#         "pawpass.scheduled_tasks.check_upcoming_checkouts"
+#     ]
+# }
 
 # doc_events ={
 #     "Stay Card":{
