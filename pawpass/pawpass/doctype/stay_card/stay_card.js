@@ -2,27 +2,37 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Stay Card", {
-	// setup(frm) {
-    //     if(frm.doc.purpose == "Boarding")
-    //         frm.set_query("assigned_attendant",() => {
-    //             return{
-    //                 filters:{
-    //                     status: "Active",
-    //                 }
-    //             }
-    //         })
-	//     },
+	setup(frm) {
+        frm.set_query("assigned_attendant",()=>{
+            let is_boarding =(frm.doc.purpose || "").includes("Boarding");
+            return{
+                filters:{
+                    status:"Active",
+                    "specialization.is_boarding":is_boarding?1:0
+                }
+            };
+        });
 
+    },
 
     refresh(frm){
         if(frm.doc.status=="Ready for Pickup"){
-            frm.dashboard.add_indicator ("Ready for Pickup","Orange");
+            frm.dashboard.add_indicator ("Ready for Pickup","orange");
+        }
+        else if(frm.doc.status=="Draft"){
+            frm.dashboard.add_indicator("Draft","purple")
+        }
+        else if(frm.doc.status=="Cancelled"){
+            frm.dashboard.add_indicator("Cancelled","black")
         }
         else if(frm.doc.status=="Picked Up"){
-            frm.dashboard.add_indicator("Picked Up","Green")
+            frm.dashboard.add_indicator("Picked Up","green")
+        }
+        else if(frm.doc.status=="Checked In"){
+            frm.dashboard.add_indicator("Checked In","red")
         }
         else{
-            frm.dashboard.add_indicator(frm.doc.status,"Blue")
+            frm.dashboard.add_indicator(frm.doc.status,"blue")
         }    
         
         if(frm.doc.status =="Ready for Pickup" && frm.doc.docstatus==1){
@@ -74,3 +84,21 @@ frappe.ui.form.on("Stay Card", {
         })
     }
 });
+
+frappe.ui.form.on("Service Line",{
+    quantity(frm,cdt,cdn){
+        let row=locals[cdt][cdn];
+        let total=(row.rate||0)*(row.quantity||0);
+        frappe.model.set_value(cdt,cdn,"line_total",total).then(()=>{
+            calculate_service_total(frm);
+        });
+    }
+});
+function calculate_service_total(frm){
+    let total=0;
+    (frm.doc.service_linees || []).forEach(row =>{
+        total+=row.line_total||0;
+    });
+    frm.set_value("services_total",total);
+    frm.set_value("fianl_amount",total);
+}

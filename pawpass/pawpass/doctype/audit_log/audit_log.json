@@ -10,7 +10,8 @@
   "document_name",
   "action",
   "user",
-  "timestamp"
+  "timestamp",
+  "date"
  ],
  "fields": [
   {
@@ -37,12 +38,17 @@
    "fieldname": "timestamp",
    "fieldtype": "Data",
    "label": "TimeStamp"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-09-24 12:26:10.299746",
+ "modified": "2026-09-25 18:01:32.845267",
  "modified_by": "Administrator",
  "module": "PawPass",
  "name": "Audit Log",

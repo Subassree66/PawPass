@@ -79,7 +79,7 @@ class StayCard(Document):
 
 def send_stay_complete_email(stay_card_name):
 	doc=frappe.get_doc("Stay Card",stay_card_name)
-	pet_owner=frappe.get_value("Pet",doc.pet,"owner_email")
+	pet_owner=frappe.get_value("Pet",doc.pet,"owmer_email")
 	if pet_owner:
 		frappe.sendmail(pet_owner,
 		subject=f"{doc.pet} is ready for pickup", message="Your pet is ready for pickup com and pickup it")	

@@ -33,6 +33,25 @@ def transfer_stays(from_attendant, to_attendant):
             message="log error in to_attendant and from_attendant"
         )
         raise
+        
+@frappe.whitelist()
+def get_stay_summary(stay_card_name):
+    stay_card=frappe.form_dict.get("stay_card_name")
+    s=frappe.db.exists("Stay Card",stay_card)
+    if not s:
+        frappe.local.response["http_status_code"]=404
+        return {"error":"Not Found"}
+    doc=frappe.get_doc("Stay Card",stay_card)
+    summary={
+        "name":doc.name,
+        "pet code":doc.pet,
+        "owner name":doc.owner_name,
+        "final amount":doc.fianl_amount
+    }
+    pet=frappe.get_doc("Pet",doc.pet)
+    if frappe.session.user !="Guest":
+        summary["email"]=pet.owmer_email
+    return summary
 
 @frappe.whitelist()
 def reassign_attendant(stay_card,attendant):
@@ -40,7 +59,53 @@ def reassign_attendant(stay_card,attendant):
     doc.assigned_attendant=attendant
     doc.save()
 
+@frappe.whitelist()
+import frappe
+from frappe.utils import today, add_days
+
+def check_upcoming_checkouts():
+    exist = frappe.db.get_value(
+        "Audit Log",
+        {
+            "action": "checkout_reminder",
+            "date": today()
+        }, "name"
+    )
+    if exist:
+        return
+    settings = frappe.get_single("PawPass Settings")
+    reminder_days = settings.reminder_days_before_checkout
+    checkout_date = add_days(today(), reminder_days)
+    stays = frappe.get_all(
+        "Stay Card",
+        filters={
+            "expected_checkout_date": ["between", [today(), checkout_date]],
+            "status": ["in", ["Checked In", "In Service"]]
+        },
+        fields=[
+            "name", "pet",
+            "owner_name", "owmer_email",
+            "expected_checkout_date"
+        ]
+    )
+    for stay in stays:
+        if stay.owmer_email:
+            frappe.sendmail(
+                recipients=[stay.owmer_email],
+                subject="Upcoming Checkout Reminder",
+                message=f"""Hello {stay.owmer_name},your pet {stay.pet} is due for checkout on{stay.expected_checkout_date}.""")
+
+    log = frappe.new_doc("Audit Log")
+    log.doctype_name = "Stay Card"
+    log.document_name = "Checkout Reminder"
+    log.action = "checkout_reminder"
+    log.user = frappe.session.user
+    log.timestamp = frappe.utils.now_datetime()
+    log.date = today()
+    log.insert(ignore_permissions=True)
+    
 
 def format_value(value):
     return frappe.format_value(value,{"field_type":"Currency"})
 
+# ad12cd0226aac58:1eb6576a94ab573

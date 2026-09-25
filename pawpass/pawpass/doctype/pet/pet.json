@@ -100,7 +100,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-09-22 16:22:14.771436",
+ "modified": "2026-09-25 14:41:53.275394",
  "modified_by": "Administrator",
  "module": "PawPass",
  "name": "Pet",
@@ -141,5 +141,6 @@
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "pet_name",
  "track_changes": 1
 }

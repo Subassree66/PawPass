@@ -30,12 +30,15 @@ doc_events = {
 jinja={
     "methods":["pawpass.jinja_methods"]
 }
+permission_query_conditions = {
+    "Stay Card": "pawpass.permissions.session_user",
+}
 
-# scheduler_events={
-#     "daily":[
-#         "pawpass.scheduled_tasks.check_upcoming_checkouts"
-#     ]
-# }
+scheduler_events={
+    "daily":[
+        "pawpass.pawpass.api.check_upcoming_checkouts"
+    ]
+}
 
 # doc_events ={
 #     "Stay Card":{
