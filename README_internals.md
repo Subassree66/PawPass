@@ -120,9 +120,17 @@ def attendants_detail():
                 },
             fields=["name", "attendant_name", "phone"]
         )
-        for att in attendants:
-            print(att.attendant_name, att.phone)
+        for attendant in attendants:
+            print(attendant.attendant_name, attendant.phone)
 
 ### Screen Recording Video link for this App
 
 ### https://drive.google.com/file/d/1Wna0jQ9AP-2QybheV9HZu7N53i0RrMWl/view?usp=sharing
+
+### Script Report image
+
+### https://drive.google.com/file/d/1qyWDyPBouzqE_poP-g0XsApQ2GeEhn13/view?usp=sharing 
+
+### Print Format image
+
+### https://drive.google.com/file/d/1PSLqvCpY8Tt4YFgE-4xaMUcVqD5MTpgr/view?usp=sharing
